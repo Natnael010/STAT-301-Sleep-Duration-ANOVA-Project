@@ -1,0 +1,54 @@
+---
+title: "Sleep Duration Analysis Using ANOVA"
+author: "Natnael Berhanu"
+date: "2026-04-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+library(ggplot2)
+```
+
+```{r}
+sleep <- read_excel("C:/Users/Nateb/OneDrive/Desktop/project 1/Sleep Health and Lifestyle.xlsx")
+View(sleep)
+```
+
+#r1
+```{r}
+model1 <- aov(`Sleep Duration` ~ Occupation, data = sleep)
+summary(model1)
+
+ggplot(sleep, aes(x = Occupation, y = `Sleep Duration`)) +
+  stat_summary(fun = mean, geom = "bar", fill = "steelblue") +
+  xlab("Occupation") +
+  ylab("Mean Sleep Duration") +
+  ggtitle("Mean Sleep Duration by Occupation")
+```
+
+#r2
+```{r}
+model2 <- aov(`Sleep Duration` ~ Gender, data = sleep)
+summary(model2)
+
+ggplot(sleep, aes(x = Gender, y = `Sleep Duration`, fill = Gender)) +
+  stat_summary(fun = mean, geom = "bar") +
+  scale_fill_manual(values = c("Female" = "red", "Male" = "blue")) +
+  xlab("Gender") +
+  ylab("Mean Sleep Duration") +
+  ggtitle("Mean Sleep Duration by Gender")
+```
+
+
+#r3
+```{r}
+model3 <- aov(`Sleep Duration` ~ Gender + Occupation + Gender*Occupation, data=sleep)
+summary(model3)
+interaction.plot(sleep$Gender,sleep$Occupation,sleep$`Sleep Duration`,xlab="Gender",ylab="Sleep Duration",trace.label="Occupation")
+```
+
